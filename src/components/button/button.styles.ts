@@ -2,6 +2,8 @@ import { ButtonKind, ButtonSize } from 'boilerplate-react-native/src/types/butto
 import { useTheme } from 'native-base';
 import { StyleSheet, TextStyle, ViewStyle } from 'react-native';
 
+import { useThemeColor } from '@/utils/use-theme-color.hook';
+
 export const useButtonStyles = () => {
   const theme = useTheme();
 
@@ -17,16 +19,6 @@ export const useButtonStyles = () => {
       justifyContent: 'center',
       minHeight: 40,
     },
-    compact: {
-      padding: theme.space['2'],
-    },
-    danger: {
-      backgroundColor: theme.colors.danger['700'],
-      borderColor: theme.colors.danger['600'],
-    },
-    default: {
-      padding: theme.space['3'],
-    },
     enhancer: {
       alignItems: 'center',
       justifyContent: 'center',
@@ -37,48 +29,33 @@ export const useButtonStyles = () => {
       flexDirection: 'row',
       gap: theme.space['1'],
     },
-    large: {
-      padding: theme.space['4'],
-    },
-    mini: {
-      padding: theme.space['1'],
-    },
-    primary: {
-      backgroundColor: theme.colors.primary['500'],
-      borderColor: theme.colors.primary['500'],
-    },
-    secondary: {
-      backgroundColor: theme.colors.secondary['500'],
-      borderColor: theme.colors.secondary['500'],
-    },
-    tertiary: {
-      backgroundColor: theme.colors.tertiary['500'],
-      borderColor: theme.colors.tertiary['500'],
-    },
   });
 };
 
 export const useKindStyles = () => {
-  const appTheme = useTheme();
+  const theme = useTheme();
+  const primaryText = useThemeColor('lightText');
+  const dangerText = useThemeColor('lightText');
+
   return {
     [ButtonKind.PRIMARY]: StyleSheet.create({
       base: {
-        backgroundColor: appTheme.colors.primary['500'],
-        borderRadius: appTheme.radii.md,
+        backgroundColor: theme.colors.primary['500'],
+        borderRadius: theme.radii.md,
       },
       enabled: { opacity: 1 },
       disabled: { opacity: 0.5 },
-      text: { color: appTheme.colors.lightText },
+      text: { color: primaryText },
     }),
     [ButtonKind.SECONDARY]: StyleSheet.create({
       base: {
-        borderRadius: appTheme.radii.md,
-        borderColor: appTheme.colors.primary['500'],
+        borderRadius: theme.radii.md,
+        borderColor: theme.colors.primary['500'],
         borderWidth: 1,
       },
       enabled: { opacity: 1 },
       disabled: { opacity: 0.5 },
-      text: { color: appTheme.colors.primary['500'] },
+      text: { color: theme.colors.primary['500'] },
     }),
     [ButtonKind.TERTIARY]: StyleSheet.create({
       base: {
@@ -86,13 +63,16 @@ export const useKindStyles = () => {
       },
       enabled: { opacity: 1 },
       disabled: { opacity: 0.5 },
-      text: { color: appTheme.colors.primary['500'] },
+      text: { color: theme.colors.primary['500'] },
     }),
     [ButtonKind.DANGER]: StyleSheet.create({
-      base: { backgroundColor: appTheme.colors.danger['700'], borderRadius: 8 },
+      base: {
+        backgroundColor: theme.colors.danger['700'],
+        borderRadius: theme.radii.md,
+      },
       enabled: { opacity: 1 },
       disabled: { opacity: 0.5 },
-      text: { color: appTheme.colors.lightText },
+      text: { color: dangerText },
     }),
   } as Record<
     ButtonKind,
@@ -101,23 +81,24 @@ export const useKindStyles = () => {
 };
 
 export const useSizeStyles = () => {
-  const appTheme = useTheme();
+  const theme = useTheme();
+
   return {
     [ButtonSize.COMPACT]: StyleSheet.create({
-      container: { padding: appTheme.space[1] },
-      text: { fontSize: appTheme.fontSizes.sm },
+      container: { padding: theme.space[1] },
+      text: { fontSize: theme.fontSizes.sm },
     }),
     [ButtonSize.DEFAULT]: StyleSheet.create({
-      container: { padding: appTheme.space[2] },
-      text: { fontSize: appTheme.fontSizes.md },
+      container: { padding: theme.space[2] },
+      text: { fontSize: theme.fontSizes.md },
     }),
     [ButtonSize.LARGE]: StyleSheet.create({
-      container: { padding: appTheme.space[3] },
-      text: { fontSize: appTheme.fontSizes.lg },
+      container: { padding: theme.space[3] },
+      text: { fontSize: theme.fontSizes.lg },
     }),
     [ButtonSize.MINI]: StyleSheet.create({
-      container: { padding: appTheme.space['0.5'] },
-      text: { fontSize: appTheme.fontSizes.xs },
+      container: { padding: theme.space[1] / 2 },
+      text: { fontSize: theme.fontSizes.xs },
     }),
   } as Record<ButtonSize, { container: ViewStyle; text: TextStyle }>;
 };

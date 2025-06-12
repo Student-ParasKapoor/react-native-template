@@ -1,105 +1,17 @@
 import { extendTheme } from 'native-base';
 
-interface IColorHues {
+export interface IColorHues {
   [key: string]: {
     [key: string]: string;
   };
-  primary: {
-    '50': string;
-    '100': string;
-    '200': string;
-    '300': string;
-    '400': string;
-    '500': string;
-    '600': string;
-    '700': string;
-    '800': string;
-    '900': string;
-  };
-  secondary: {
-    '50': string;
-    '100': string;
-    '200': string;
-    '300': string;
-    '400': string;
-    '500': string;
-    '600': string;
-    '700': string;
-    '800': string;
-    '900': string;
-  };
-  tertiary: {
-    '50': string;
-    '100': string;
-    '200': string;
-    '300': string;
-    '400': string;
-    '500': string;
-    '600': string;
-    '700': string;
-    '800': string;
-    '900': string;
-  };
-  background: {
-    '50': string;
-    '100': string;
-    '200': string;
-    '300': string;
-    '400': string;
-    '500': string;
-    '600': string;
-    '700': string;
-    '800': string;
-    '900': string;
-  };
-  danger: {
-    '50': string;
-    '100': string;
-    '200': string;
-    '300': string;
-    '400': string;
-    '500': string;
-    '600': string;
-    '700': string;
-    '800': string;
-    '900': string;
-  };
-  warning: {
-    '50': string;
-    '100': string;
-    '200': string;
-    '300': string;
-    '400': string;
-    '500': string;
-    '600': string;
-    '700': string;
-    '800': string;
-    '900': string;
-  };
-  success: {
-    '50': string;
-    '100': string;
-    '200': string;
-    '300': string;
-    '400': string;
-    '500': string;
-    '600': string;
-    '700': string;
-    '800': string;
-    '900': string;
-  };
-  neutral: {
-    '50': string;
-    '100': string;
-    '200': string;
-    '300': string;
-    '400': string;
-    '500': string;
-    '600': string;
-    '700': string;
-    '800': string;
-    '900': string;
-  };
+  primary: { [key: string]: string };
+  secondary: { [key: string]: string };
+  tertiary: { [key: string]: string };
+  background: { [key: string]: string };
+  danger: { [key: string]: string };
+  warning: { [key: string]: string };
+  success: { [key: string]: string };
+  neutral: { [key: string]: string };
 }
 
 export const ICOLORHUES: IColorHues = {
@@ -201,41 +113,25 @@ export const ICOLORHUES: IColorHues = {
   },
 };
 
-const appTheme = extendTheme({
-  colors: {
-    ...ICOLORHUES,
-  },
+const baseTheme = {
+  colors: ICOLORHUES,
   components: {
     Button: {
       baseStyle: {
-        _text: {
-          color: 'white',
-        },
-        _pressed: {
-          opacity: 0.7,
-        },
+        _text: { color: 'white' },
+        _pressed: { opacity: 0.7 },
       },
       variants: {
-        solid: {
-          bg: 'primary.500',
-        },
+        solid: { bg: 'primary.500' },
         subtle: {
-          bg: 'background',
-          _text: {
-            color: 'coolGray.800',
-          },
-          _pressed: {
-            bg: 'coolGray.200',
-          },
+          bg: 'background.100',
+          _text: { color: 'neutral.900' },
+          _pressed: { bg: 'background.200' },
         },
         danger: {
           bg: 'danger.600',
-          _disabled: {
-            bg: 'danger.200',
-          },
-          _pressed: {
-            bg: 'danger.700',
-          },
+          _disabled: { bg: 'danger.200' },
+          _pressed: { bg: 'danger.700' },
         },
       },
     },
@@ -243,7 +139,7 @@ const appTheme = extendTheme({
       baseStyle: {
         _focus: {
           borderColor: 'primary.500',
-          backgroundColor: 'background',
+          backgroundColor: 'background.50',
         },
       },
       variants: {
@@ -258,19 +154,12 @@ const appTheme = extendTheme({
     },
     Heading: {
       baseStyle: {
-        color: 'coolGray.800',
+        color: 'neutral.900',
       },
       sizes: {
-        lg: {
-          fontWeight: '600',
-        },
-        xs: {
-          fontWeight: '500',
-          color: 'coolGray.600',
-        },
-        '2xl': {
-          color: 'white',
-        },
+        lg: { fontWeight: '600' },
+        xs: { fontWeight: '500', color: 'neutral.700' },
+        '2xl': { color: 'white' },
       },
     },
     Icon: {
@@ -280,12 +169,23 @@ const appTheme = extendTheme({
     },
     Toast: {
       baseStyle: {
-        _title: {
-          textAlign: 'center',
-        },
+        _title: { textAlign: 'center' },
       },
     },
   },
+};
+
+export const lightTheme = extendTheme({
+  ...baseTheme,
+  config: { initialColorMode: 'light' },
 });
 
-export default appTheme;
+export const darkTheme = extendTheme({
+  ...baseTheme,
+  colors: {
+    ...ICOLORHUES,
+    background: ICOLORHUES.neutral['900'],
+    text: ICOLORHUES.neutral['50'],
+  },
+  config: { initialColorMode: 'dark' },
+});

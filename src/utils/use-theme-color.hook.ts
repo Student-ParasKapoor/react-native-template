@@ -1,26 +1,18 @@
-import { useTheme } from 'native-base';
+import { useTheme as useNBTheme } from 'native-base';
 import { useMemo } from 'react';
 
-import { ICOLORHUES } from '@/app-theme';
-
-export type ThemeColorKey = keyof typeof ICOLORHUES;
-
-export const useThemeColor = (color: `${ThemeColorKey}` | `${ThemeColorKey}.${string}`): string => {
-  const theme = useTheme();
+export const useThemeColor = (color: `${string}` | `${string}.${string}`): string => {
+  const { colors } = useNBTheme();
 
   return useMemo(() => {
-    const [colorKey, shade = '200'] = color.split('.') as [ThemeColorKey, string];
+    const [colorKey, shade = '200'] = color.split('.') as [string, string];
 
-    if (!Object.prototype.hasOwnProperty.call(theme.colors, colorKey)) {
-      return color;
-    }
+    const dynamicColors = colors as Record<string, any>;
 
-    const themeColor = theme.colors[colorKey as keyof typeof theme.colors];
+    if (!dynamicColors[colorKey]) return color;
 
-    if (typeof themeColor === 'string') {
-      return themeColor;
-    }
+    const themeColor = dynamicColors[colorKey];
 
-    return themeColor?.[shade as keyof typeof themeColor] ?? color;
-  }, [color]);
+    return typeof themeColor === 'string' ? themeColor : themeColor?.[shade] ?? color;
+  }, [color, colors]);
 };

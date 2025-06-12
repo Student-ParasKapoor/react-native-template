@@ -20,21 +20,20 @@ interface ButtonProps {
 const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
   children,
   disabled = false,
-  endEnhancer = undefined,
+  endEnhancer,
   isLoading = false,
   kind = ButtonKind.PRIMARY,
-  onClick = undefined,
+  onClick,
   size = ButtonSize.DEFAULT,
-  startEnhancer = undefined,
-  width = undefined,
+  startEnhancer,
+  width,
 }) => {
   const kindStyles = useKindStyles();
   const sizeStyles = useSizeStyles();
+  const styles = useButtonStyles();
 
   const kindStyle = kindStyles[kind];
   const sizeStyle = sizeStyles[size];
-
-  const styles = useButtonStyles();
 
   return (
     <TouchableOpacity
@@ -50,7 +49,7 @@ const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
       accessibilityRole="button"
     >
       <View style={styles.horizontalStack}>
-        {startEnhancer ? (
+        {startEnhancer && (
           <View style={styles.enhancer}>
             {typeof startEnhancer === 'string' ? (
               <Text style={[kindStyle.text, sizeStyle.text]}>{startEnhancer}</Text>
@@ -58,10 +57,10 @@ const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
               startEnhancer
             )}
           </View>
-        ) : null}
+        )}
         <Text style={[kindStyle.text, sizeStyle.text]}>{children}</Text>
-        {isLoading ? <Spinner /> : null}
-        {endEnhancer ? (
+        {isLoading && <Spinner />}
+        {endEnhancer && (
           <View style={styles.enhancer}>
             {typeof endEnhancer === 'string' ? (
               <Text style={[kindStyle.text, sizeStyle.text]}>{endEnhancer}</Text>
@@ -69,21 +68,10 @@ const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
               endEnhancer
             )}
           </View>
-        ) : null}
+        )}
       </View>
     </TouchableOpacity>
   );
-};
-
-Button.defaultProps = {
-  disabled: false,
-  endEnhancer: undefined,
-  isLoading: false,
-  kind: ButtonKind.PRIMARY,
-  onClick: undefined,
-  size: ButtonSize.DEFAULT,
-  startEnhancer: undefined,
-  width: undefined,
 };
 
 export default Button;
